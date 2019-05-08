@@ -3,7 +3,7 @@ import {View} from 'react-native'
 import {Svg, Rect, G} from 'react-native-svg'
 import AbstractChart from './abstract-chart'
 
-const barWidth = 32
+const barWidth = 24
 
 class BarChart extends AbstractChart {
   renderBars = config => {
@@ -11,7 +11,7 @@ class BarChart extends AbstractChart {
     const baseHeight = this.calcBaseHeight(data, height)
     return data.map((x, i) => {
       const barHeight = this.calcHeight(x, data, height)
-      const barWidth = 32
+      const barWidth = 24
       return (
         <Rect
           key={Math.random()}
@@ -26,7 +26,7 @@ class BarChart extends AbstractChart {
           }
           width={barWidth}
           height={(Math.abs(barHeight) / 4) * 3}
-          fill="url(#fillShadowGradient)"
+          fill={`url(#fillShadowGradient-${i})`}
         />
       )
     })
@@ -48,7 +48,7 @@ class BarChart extends AbstractChart {
           y={((baseHeight - barHeight) / 4) * 3 + paddingTop}
           width={barWidth}
           height={2}
-          fill={this.props.chartConfig.color(0.6)}
+          fill={(this.props.data.colors && this.props.data.colors[i]) || this.props.chartConfig.colors(0.6)}
         />
       )
     })
@@ -56,7 +56,7 @@ class BarChart extends AbstractChart {
 
   render() {
     const paddingTop = 16
-    const paddingRight = 64
+    const paddingRight = 20
     const {width, height, data, style = {}} = this.props
     const {borderRadius = 0} = style
     const config = {
@@ -67,6 +67,7 @@ class BarChart extends AbstractChart {
       <View style={style}>
         <Svg height={height} width={width}>
           {this.renderDefs({
+            data,
             ...config,
             ...this.props.chartConfig
           })}
@@ -81,6 +82,7 @@ class BarChart extends AbstractChart {
             {this.renderHorizontalLines({
               ...config,
               count: 4,
+              paddingRight,
               paddingTop
             })}
           </G>
