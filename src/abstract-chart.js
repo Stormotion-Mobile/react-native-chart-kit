@@ -80,10 +80,11 @@ class AbstractChart extends Component {
       height,
       paddingTop,
       paddingRight,
-      yLabelsOffset = 6
+      yLabelsOffset = 3
     } = config
     const decimalPlaces = this.props.chartConfig.decimalPlaces === undefined ? 2 : this.props.chartConfig.decimalPlaces
-    const yAxisLabel = this.props.yAxisLabel || ''
+    const yAxisFrontLabel = this.props.yAxisFrontLabel || ''
+    const yAxisEndLabel = this.props.yAxisEndLabel || ''
 
     return [...new Array(count)].map((_, i) => {
       let yLabel
@@ -94,7 +95,7 @@ class AbstractChart extends Component {
         const label = this.props.fromZero ?
           (this.calcScaler(data) / (count - 1)) * i + Math.min(...data, 0) :
           (this.calcScaler(data) / (count - 1)) * i + Math.min(...data)
-        yLabel = `${yAxisLabel}${label.toFixed(decimalPlaces)}`
+        yLabel = `${yAxisFrontLabel}${label.toFixed(decimalPlaces)}${yAxisEndLabel}`
       }
 
       return (

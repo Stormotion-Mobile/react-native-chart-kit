@@ -56,7 +56,7 @@ class BarChart extends AbstractChart {
 
   render() {
     const paddingTop = 16
-    const paddingRight = 20
+    const paddingRight = 32
     const {width, height, data, style = {}} = this.props
     const {borderRadius = 0} = style
     const config = {
