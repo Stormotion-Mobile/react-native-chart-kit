@@ -80,7 +80,7 @@ class AbstractChart extends Component {
       height,
       paddingTop,
       paddingRight,
-      yLabelsOffset = 12
+      yLabelsOffset = 6
     } = config
     const decimalPlaces = this.props.chartConfig.decimalPlaces === undefined ? 2 : this.props.chartConfig.decimalPlaces
     const yAxisLabel = this.props.yAxisLabel || ''
@@ -102,7 +102,7 @@ class AbstractChart extends Component {
           key={Math.random()}
           x={paddingRight - yLabelsOffset}
           textAnchor="end"
-          y={(height * 3) / 4 - ((height - paddingTop) / count) * i + 12}
+          y={(height / 4) * ((count - 1) - i) + paddingTop + 3}
           fontSize={12}
           fill={this.props.chartConfig.color(0.5)}
         >
@@ -188,7 +188,7 @@ class AbstractChart extends Component {
   }
 
   renderDefs = config => {
-    const {width, height, backgroundGradientFrom, backgroundGradientTo} = config
+    const {width, height, backgroundGradientFrom, backgroundGradientTo, data = {}} = config
     return (
       <Defs>
         <LinearGradient
@@ -219,6 +219,29 @@ class AbstractChart extends Component {
             stopOpacity="0"
           />
         </LinearGradient>
+        {
+          data.datasets[0].data.map((_, i) => (
+            <LinearGradient
+              id={`fillShadowGradient-${i}`}
+              x1={0}
+              y1={0}
+              x2={0}
+              y2={height}
+            >
+              <Stop
+                offset="0"
+                stopColor={data.colors[i]}
+                stopOpacity="0.6"
+              />
+              <Stop
+                offset="1"
+                stopColor={data.colors[i]}
+                stopOpacity="0.1"
+              />
+            </LinearGradient>
+            )
+          )
+        }
       </Defs>
     )
   }
